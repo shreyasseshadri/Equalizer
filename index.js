@@ -30,75 +30,89 @@
 //       spr.onerror=function(event){};
 //   }
 
-var getUserMedia = require('getusermedia')
+//---------------------------------------------------------------------------------------------
+// var getUserMedia = require('getusermedia')
 
-getUserMedia({ video: true, audio: true }, function (err, stream) {
-  if (err) return console.error(err)
+// getUserMedia({ video: true, audio: true }, function (err, stream) {
+//   if (err) return console.error(err)
 
-  var Peer = require('simple-peer')
-  var peer = new Peer({
-    initiator: location.hash === '#init',
-    trickle: false,
-    stream: stream
-  })
+//   var Peer = require('simple-peer')
+//   var peer = new Peer({
+//     initiator: location.hash === '#init',
+//     trickle: false,
+//     stream: stream
+//   })
+//    peer.on('signal', function (data) {
+//     document.getElementById('yourId').value = JSON.stringify(data)
+//   })
 
-  peer.on('signal', function (data) {
-    document.getElementById('yourId').value = JSON.stringify(data)
-  })
-
-  document.getElementById('connect').addEventListener('click', function () {
-    var otherId = JSON.parse(document.getElementById('otherId').value);
-    peer.signal(otherId);
-  })
+//   document.getElementById('connect').addEventListener('click', function () {
+//     var otherId = JSON.parse(document.getElementById('otherId').value);
+//     peer.signal(otherId);
+//   })
 
 //  document.getElementById('send').addEventListener('click', function () {
- //   var yourMessage = document.getElementById('yourMessage').value
-  //  peer.send(yourMessage)
- // })
+//    var yourMessage = document.getElementById('yourMessage').value
+//    peer.send(yourMessage)
+//  })
     
-peer.on('data', function (data) {
-    document.getElementById('messages').textContent += data + ' ';
-  })
+// peer.on('data', function (data) {
+//     document.getElementById('messages').textContent += data + ' ';
+//   })
 
-  peer.on('stream', function (stream) {
-    var video = document.createElement('video')
-    document.body.appendChild(video)
-    document.body.appendChild(video)
-    video.src = window.URL.createObjectURL(stream)
-    video.play()
-    // ------------------------------------------------------
+//   peer.on('stream', function (stream) {
+//     var video = document.createElement('video')
+//     document.body.appendChild(video)
+//     document.body.appendChild(video)
+//     video.src = window.URL.createObjectURL(stream)
+//     video.play()
+//     // ------------------------------------------------------
 
-    var r=document.getElementById('result');
-      var spr=new webkitSpeechRecognition();
-      spr.continuous=true;
-      spr.interimResults=true;
-      spr.lang='hi-IN';
-      spr.start();
-      console.log("here")
-      var ftr='';
-      spr.onresult=function(event){
-          console.log('i got');
-          var interimTranscripts='';
-          for(var i=event.resultIndex;i<event.results.length;i++)
-          {
-              var transcript=event.results[i][0].transcript;
-              console.log(transcript)
-              transcript.replace("\n","<br>")
-              if(event.results[i].isFinal){
-                  ftr+=transcript;
-                  // sendinterim(ftr);
-                  
-              }
-              else
-              {
-                interimTranscripts+=transcript;
-                peer.send(interimTranscripts);
-              }
-          }
-          r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+interimTranscripts+'</span>';
-      };
-      spr.onerror=function(event){};
+//     var r=document.getElementById('result');
+//       var spr=new webkitSpeechRecognition();
+//       spr.continuous=true;
+//       spr.interimResults=true;
+//       spr.lang='hi-IN';
+//       spr.start();
+//       console.log("here")
+//       var ftr='';
+//       spr.onresult=function(event){
+//           console.log('i got');
+//           var interimTranscripts='';
+//           for(var i=event.resultIndex;i<event.results.length;i++)
+//           {
+//               var transcript=event.results[i][0].transcript;
+//               console.log(transcript)
+//               transcript.replace("\n","<br>")
+//               if(event.results[i].isFinal){
+//                   ftr+=transcript;
+//               }
+//               else
+//               {
+//                 interimTranscripts+=transcript;
+//                 peer.send(interimTranscripts);
+//               }
+//           }
+//           r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+interimTranscripts+'</span>';
+//       };
+//       spr.onerror=function(event){};
 
-  })
-})
+//   })
+// })
+
+
+// ------------------------------------------------------------------------------------
+var peer=new Peer('1');
+peer.on('open',function(id){
+  console.log('my id: '+id);
+});
+
+var conn = peer.connect('2');
+conn.on('open',function(){
+    conn.send('hello');
+});
+
+conn.on('data',function(data){
+   console.log('Recieved data : '+data);
+});
 
