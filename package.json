@@ -6,8 +6,8 @@
   "scripts": {
     "start": "budo index.js:bundle.js"
   },
-  "author": "Kyle Robinson Young <kyle@dontkry.com> (http://dontkry.com)",
-  "license": "MIT",
+  "author": "Equilizers",
+  "license": "NITK",
   "devDependencies": {
     "budo": "^4.1.0"
   },
