@@ -36,8 +36,11 @@ peer.on('data', function (data) {
 
   peer.on('stream', function (stream) {
     var video = document.createElement('video')
-    document.body.appendChild(video)
-    video.src = window.URL.createObjectURL(stream)
+      // var binaryData = [];
+      // binaryData.push(stream);
+      // video.src =window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
+    video.srcObject=stream;
+      document.body.appendChild(video)
     video.play()
     // ------------------------------------------------------
 
