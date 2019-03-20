@@ -21,16 +21,17 @@ getUserMedia({ video: true, audio: true }, function (err, stream) {
     peer.signal(otherId);
   })
 
- // document.getElementById('send').addEventListener('click', function () {
- //   var yourMessage = document.getElementById('yourMessage').value
- //   peer.send(yourMessage)
- // })
+ document.getElementById('send').addEventListener('click', function () {
+   var yourMessage = document.getElementById('yourMessage').value
+   peer.send(yourMessage)
+     console.log('Message sent !');
+ })
 
 peer.on('data', function (data) {
-    //document.getElementById('messages').textContent += data + ' ';
+    document.getElementById('messages').textContent += data + ' ';
     //if(data!== null)
       //normaltext=data;
-      trans(data);
+      // trans(data);
       //console.log(typeof(data) + " ,::" + data)
   })
 
