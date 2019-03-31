@@ -1,148 +1,173 @@
 var getUserMedia = require('getusermedia')
 
-getUserMedia({ video: true, audio: true }, function (err, stream) {
-  if (err) return console.error(err)
+getUserMedia({video: true, audio: true}, function (err, stream) {
+    if (err) return console.error(err)
 
-  var Peer = require('simple-peer')
-  var peer = new Peer({
-    initiator: location.hash === '#init',
-    trickle: false,
-    stream: stream
-  })
-  var spr=new webkitSpeechRecognition();
-  spr.continuous=true;
-  spr.interimResults=true;
-   peer.on('signal', function (data) {
-    document.getElementById('yourId').value = JSON.stringify(data)
-  })
+    var Peer = require('simple-peer')
+    var peer = new Peer({
+        initiator: location.hash === '#init',
+        trickle: false,
+        stream: stream
+    });
 
-  document.getElementById('connect').addEventListener('click', function () {
-    var otherId = JSON.parse(document.getElementById('otherId').value);
-    peer.signal(otherId);
-  })
+    var is_init = false;
+    if (location.hash === '#init') is_init = true;
+    var server_location = null;
+    if (is_init) {
+        server_location = 'ws://localhost:3000/exchange/init';
+    } else server_location = 'ws://localhost:3000/exchange';
+    var server = new WebSocket(server_location);
 
- document.getElementById('send').addEventListener('click', function () {
-   var yourMessage = document.getElementById('yourMessage').value
-   peer.send(yourMessage)
-     console.log('Message sent !');
- })
+    var spr = new webkitSpeechRecognition();
+    spr.continuous = true;
+    spr.interimResults = true;
 
-peer.on('data', function (data) {
-    document.getElementById('messages').textContent += data + ' ';
-    //if(data!== null)
-      //normaltext=data;
-      // trans(data);
-      //console.log(typeof(data) + " ,::" + data)
-  })
 
-  peer.on('stream', function (stream) {
-    var video = document.createElement('video')
-      // var binaryData = [];
-      // binaryData.push(stream);
-      // video.src =window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
-    video.srcObject=stream;
-      document.body.appendChild(video)
-    video.play()
-    // ------------------------------------------------------
+    peer.on('signal', function (data) {
+        server.send(JSON.stringify(data));
+        document.getElementById('yourId').value = JSON.stringify(data)
+    });
 
-  })
-  peer.on('connect', function(){
+    server.onmessage = function (e) {
+        document.getElementById('otherId').value = e.data;
+        peer.signal(JSON.parse(e.data));
+    };
+
+    // if (is_init) {
+    //     server.onmessage = function (e) {
+    //         document.getElementById('otherId').value = e.data;
+    //         peer.signal(JSON.parse(e.data));
+    //     };
+    // } else {
+    //     server.onmessage = function (e) {
+    //         document.getElementById('otherId').value=e.data;
+    //         perr.signal(JSON.parse(e.data));
+    //     };
+    // }
+    document.getElementById('connect').addEventListener('click', function () {
+        var otherId = JSON.parse(document.getElementById('otherId').value);
+        peer.signal(otherId);
+    });
+
+    document.getElementById('send').addEventListener('click', function () {
+        var yourMessage = document.getElementById('yourMessage').value
+        peer.send(yourMessage)
+        console.log('Message sent !');
+    });
+
+    peer.on('data', function (data) {
+        document.getElementById('messages').textContent += data + ' ';
+        //if(data!== null)
+        //normaltext=data;
+        // trans(data);
+        //console.log(typeof(data) + " ,::" + data)
+    });
+
+    peer.on('stream', function (stream) {
+        var video = document.createElement('video')
+        // var binaryData = [];
+        // binaryData.push(stream);
+        // video.src =window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
+        video.srcObject = stream;
+        document.body.appendChild(video)
+        video.play()
+        // ------------------------------------------------------
+
+    });
+    peer.on('connect', function () {
         console.log("inside connection")
-        var r=document.getElementById('result');
-          spr.lang='en-IN';
-          spr.start();
-          //console.log("here")
-          var ftr='hello';
-          spr.onresult=function(event){
-              //console.log('i got');
-              var interimTranscripts='';
-              for(var i=event.resultIndex;i<event.results.length;i++)
-              {
-                  var transcript=event.results[i][0].transcript;
-                  //normaltext=transcript;
-                  //trans(normaltext)
-                  //console.log("my voice" + transcript);
-                  transcript.replace("\n","<br>");
-                  if(event.results[i].isFinal){
-                      ftr+=transcript;
-                        //normaltext=transcript;
-                        //trans(normaltext)
-                        peer.send(transcript);
+        var r = document.getElementById('result');
+        spr.lang = 'en-IN';
+        spr.start();
+        //console.log("here")
+        var ftr = 'hello';
+        spr.onresult = function (event) {
+            //console.log('i got');
+            var interimTranscripts = '';
+            for (var i = event.resultIndex; i < event.results.length; i++) {
+                var transcript = event.results[i][0].transcript;
+                //normaltext=transcript;
+                //trans(normaltext)
+                //console.log("my voice" + transcript);
+                transcript.replace("\n", "<br>");
+                if (event.results[i].isFinal) {
+                    ftr += transcript;
+                    //normaltext=transcript;
+                    //trans(normaltext)
+                    peer.send(transcript);
 
-                  }
-                  else
-                  {
-                    interimTranscripts+=transcript;
+                } else {
+                    interimTranscripts += transcript;
 
-                  }
-              }
-              //  r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
-              console.log(ftr);
-    		//trans(ftr);
+                }
+            }
+            //  r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
+            console.log(ftr);
+            //trans(ftr);
 
-          };
-          spr.onerror=function(event){};
-  })
-  peer.on('close',function(){
-    spr.stop();
-  })
+        };
+        spr.onerror = function (event) {
+        };
+    });
+    peer.on('close', function () {
+        spr.stop();
+    })
 
-})
+});
 
 
 //translating....
-function trans(normaltext)
-{
-  //console.log("inside method")
-  var LanguageTranslatorV3 = require('watson-developer-cloud/language-translator/v3');
-  var languageTranslator = new LanguageTranslatorV3({
-      version: '2018-05-01',
-      username: '349929ad-4b13-4e4d-9727-e4e2562e4bb9',
-      password: 'YyDF8VYdudSK',
-      url: 'https://gateway.watsonplatform.net/language-translator/api'
+function trans(normaltext) {
+    //console.log("inside method")
+    var LanguageTranslatorV3 = require('watson-developer-cloud/language-translator/v3');
+    var languageTranslator = new LanguageTranslatorV3({
+        version: '2018-05-01',
+        username: '349929ad-4b13-4e4d-9727-e4e2562e4bb9',
+        password: 'YyDF8VYdudSK',
+        url: 'https://gateway.watsonplatform.net/language-translator/api'
     });
 
-  var parameters = {
-    text: normaltext,
-    model_id: 'hi-en'
-  };
+    var parameters = {
+        text: normaltext,
+        model_id: 'hi-en'
+    };
 
-  languageTranslator.translate(
-    parameters,
-    function(error, response) {
-      if (error)
-        console.log(error)
-      else
-        console.log(JSON.stringify(response, null, 2));
-    var stri= response["translations"][0].translation;
-    document.getElementById('translated').innerHTML = stri + ' ';
-    console.log(stri+ ","+typeof(stri));
-    //var tts = require('./speech.js');
-    console.log("script changed");
-    // do_synthesis(stri);
+    languageTranslator.translate(
+        parameters,
+        function (error, response) {
+            if (error)
+                console.log(error)
+            else
+                console.log(JSON.stringify(response, null, 2));
+            var stri = response["translations"][0].translation;
+            document.getElementById('translated').innerHTML = stri + ' ';
+            console.log(stri + "," + typeof (stri));
+            //var tts = require('./speech.js');
+            console.log("script changed");
+            // do_synthesis(stri);
 
-    }
-  );
-}
-function do_synthesis(texter){
-  var msg = new SpeechSynthesisUtterance();
-var voices = window.speechSynthesis.getVoices();
-msg.voice = voices[10]; // Note: some voices don't support altering params
-msg.voiceURI = 'native';
-msg.volume = 1; // 0 to 1
-msg.rate = 1; // 0.1 to 10
-msg.pitch = 2; //0 to 2
-msg.text = 'Hello World';
-msg.lang = 'en-US';
-
-msg.onend = function(e) {
-  console.log('Finished in ' + event.elapsedTime + ' seconds.');
-};
-
-speechSynthesis.speak(msg);
-
+        }
+    );
 }
 
+function do_synthesis(texter) {
+    var msg = new SpeechSynthesisUtterance();
+    var voices = window.speechSynthesis.getVoices();
+    msg.voice = voices[10]; // Note: some voices don't support altering params
+    msg.voiceURI = 'native';
+    msg.volume = 1; // 0 to 1
+    msg.rate = 1; // 0.1 to 10
+    msg.pitch = 2; //0 to 2
+    msg.text = 'Hello World';
+    msg.lang = 'en-US';
+
+    msg.onend = function (e) {
+        console.log('Finished in ' + event.elapsedTime + ' seconds.');
+    };
+
+    speechSynthesis.speak(msg);
+
+}
 
 
 // function Synthesize(stringprint){

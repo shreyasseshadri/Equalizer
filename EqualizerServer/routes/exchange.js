@@ -7,15 +7,6 @@ var init_id = "default";
 router.ws("/", function (ws, req) {
     clients["non_init"] = ws;
     console.log('Non init client connected');
-    // console.log("clients: ",clients)
-    //Send init id to non init client
-    console.log(init_id);
-    if (init_id !== "default")
-    {
-        ws.send(init_id);
-
-    }
-    else console.log("init client not connected");
 
     //Wait till non init client gives back id and give back to init
     ws.on("message", function (msg) {
@@ -32,7 +23,9 @@ router.ws("/init", function (ws, req) {
 
     console.log("init client connected");
     ws.on("message", function (msg) {
-            init_id = msg;
+        // init_id = msg;
+        if (clients.hasOwnProperty("non_init"))
+            clients["non_init"].send(msg);
     });
 });
 module.exports = router;
