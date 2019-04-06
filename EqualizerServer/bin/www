@@ -6,7 +6,7 @@
 
 
 var debug = require('debug')('equalizerserver:server');
-const port = normalizePort(process.env.PORT || "8000");
+const port = normalizePort(process.env.PORT || "3000");
 const app = require("../app").app;
 const server = require("../app").httpServer;
 app.set("port", port);
