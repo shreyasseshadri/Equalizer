@@ -51,8 +51,8 @@ The client with location # as init is the client to start the exchange of networ
 ## Server Usage
 
 Server currently has <i>three</i> routes
-- `/exchange/init` - A web socket connection that connects with the <i>first</i> client  mentioned above, responsible for exchange of network IDs.
--  `/exchange` - A web socket that connects with the <i>second</i> client mentioned above, responsible for exchange of network IDs.
+- `/exchange` - A web socket connection that connects with the <i>first</i> client  mentioned above, responsible for exchange of network IDs.
+-  `/exchange/init` - A web socket that connects with the <i>second</i> client mentioned above, responsible for exchange of network IDs.
 - `/translate` - A route for POST requests for translation.
 
 #### Usage of /translate route
