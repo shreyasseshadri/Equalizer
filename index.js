@@ -21,6 +21,26 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     var spr = new webkitSpeechRecognition();
     spr.continuous = true;
     spr.interimResults = true;
+    
+    fetch('http://localhost:3000/translate', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            text:'धन्यवाद',
+             to:'en',
+        }),
+    }).then(function (response) {
+        return response.json();
+    }).then(json => {
+
+           console.log(json);
+        })
+        .catch(function (error) {
+            throw error;
+        });
 
 
     peer.on('signal', function (data) {
