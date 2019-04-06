@@ -64,6 +64,7 @@ Sample fetch request for translate
 ```
 fetch('http://localhost:3000/translate', {
         method: 'POST',
+        mode:'cors',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
