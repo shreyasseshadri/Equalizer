@@ -1,5 +1,458 @@
 <!DOCTYPE html>
 <html>
+<!-- {% extends "base.html" %} -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<style type="text/css">
+	.image{
+
+		background:#000 url('1.jpg') top center no-repeat;
+		background-size: cover;
+		height: 100vh;
+		width: 100%;
+		position: relative;
+		border-left: 0px;
+		/*opacity: 0.5;*/
+	}
+	@media (min-width: 1024px) {
+	  #image {
+	    background-attachment: fixed;
+	  }
+	}
+	#image:before {
+	  content: "";
+	  background: rgba(0, 0, 0, 0.6);
+	  position: absolute;
+	  bottom: 0;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	}
+	#image .in-image{
+	  position: absolute;
+	  bottom: 0;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  flex-direction: column;
+	  text-align: center;
+	}
+	#image h1 {
+	  margin: 30px 0 10px 0;
+	  font-size: 48px;
+	  font-weight: 700;
+	  line-height: 56px;
+	  text-transform: uppercase;
+	  color: #fff;
+	}
+	@media (max-width: 768px) {
+	  #image h1 {
+	    font-size: 28px;
+	    line-height: 36px;
+	  }
+	}
+	#image h2 {
+	  color: #efebe4;
+	  margin-bottom: 50px;
+	  font-size: 24px;
+	}
+	@media (max-width: 768px) {
+	  #image h2 {
+	    font-size: 18px;
+	    line-height: 24px;
+	    margin-bottom: 30px;
+	  }
+	}
+	.section-header .section-title {
+	  font-size: 32px;
+	  color: #111;
+	  text-transform: uppercase;
+	  text-align: center;
+	  font-weight: 700;
+	  margin-bottom: 5px;
+	}
+	.section-header .section-description {
+	  text-align: center;
+	  padding-bottom: 40px;
+	  color: #999;
+	}
+	.about-app {
+	  background: #efebe4;
+	  padding: 80px 0;
+	}
+	@media (max-width: 768px) {
+	  .about .in-about-app .title {
+	    padding-top: 15px;
+	  }
+	}
+	.about-app .in-about-app p {
+	  line-height: 26px;
+	}
+	.about-app .in-about-app p:last-child {
+	  margin-bottom: 0;
+	}
+	.about-app .in-about-app .icon-box {
+	  background-size: cover;
+	  padding: 0 0 50px 0;
+	}
+	.about-app .in-about-app .icon-box .icon {
+	  background: #fff;
+	  width: 64px;
+	  height: 64px;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  flex-direction: column;
+	  text-align: center;
+	  border-radius: 50%;
+	  border: 2px solid #29413c;
+	}
+	.about-app .in-about-app .icon-box .icon i {
+	  color: #29413c;
+	  font-size: 24px;
+
+	}
+	.about-app .in-about-app .icon-box .title {
+	  margin-left: 10px;
+	  font-weight: 500;
+	  margin-bottom: 5px;
+	  font-size: 18px;
+	  padding-top: 10px;
+	  text-transform: uppercase;
+	}
+	.about-app .in-about-app .icon-box .title a {
+	  color: #111;
+	}
+	.about-app .in-about-app .icon-box .description {
+	  margin-left: 15px;
+	  line-height: 24px;
+	  font-size: 14px;
+	}
+	#services {
+	  background: #fff;
+	  background-size: cover;
+	  padding: 80px 0 60px 0;
+	}
+	#services .box {
+	  padding: 50px 20px;
+	  margin-bottom: 50px;
+	  text-align: center;
+	  border: 1px solid #e6e6e6;
+	  height: 200px;
+	  position: relative;
+	  background: #fafafa;
+	}
+	#services .icon {
+	  position: absolute;
+	  top: -36px;
+	  left: calc(50% - 36px);
+	  transition:  all 0.3s ease;
+	  border-radius: 50%;
+	  border: 6px solid #fff;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	  flex-direction: column;
+	  text-align: center;
+	  width: 72px;
+	  height: 72px;
+	  background: #29413c;
+	}
+	#services .icon a {
+	  display: inline-block;
+	}
+	#services .icon i {
+	  color: #fff;
+	  font-size: 24px;
+	}
+	#services .box:hover .icon {
+	  background: #fff;
+	  border: 2px solid #29413c;
+	}
+	#services .box:hover .icon i {
+	  color: #29413c;
+	}
+	#services .box:hover .icon a {
+	  color: #29413c;
+	}
+	#services .title {
+	  font-weight: 700;
+	  font-size: 18px;
+	  margin-bottom: 15px;
+	  text-transform: uppercase;
+	}
+	#services .title a {
+	  color: #111;
+	}
+	#services .description {
+	  font-size: 14px;
+	  line-height: 24px;
+	}
+	#contact {
+	  background: #f7f7f7;
+	  padding: 80px 0 40px 0;
+	}
+	#contact #google-map {
+	  height: 300px;
+	  margin-bottom: 20px;
+	}
+	#contact .info {
+	  color: #333333;
+	}
+	#contact .info i {
+	  font-size: 32px;
+	  color: #868b91;
+	  float: left;
+	}
+	#contact .info p {
+	  padding: 0 0 10px 50px;
+	  margin-bottom: 20px;
+	  line-height: 22px;
+	  font-size: 14px;
+	}
+	#contact .info .email p {
+	  padding-top: 5px;
+	}
+	#contact .social-links {
+	  padding-bottom: 20px;
+	}
+	#contact .social-links a {
+	  font-size: 18px;
+	  display: inline-block;
+	  background: #29413c;
+	  color: #fff;
+	  line-height: 1;
+	  padding: 8px 0;
+	  border-radius: 50%;
+	  text-align: center;
+	  width: 36px;
+	  height: 36px;
+	  transition: 0.3s;
+	}
+	#contact .social-links a:hover {
+	  background: #2dc997;
+	  color: #fff;
+	}
+	#contact .form #sendmessage {
+	  color: #868b91;
+	  border: 1px solid #868b91;
+	  display: none;
+	  text-align: center;
+	  padding: 15px;
+	  font-weight: 600;
+	  margin-bottom: 15px;
+	}
+	#contact .form #errormessage {
+	  color: red;
+	  display: none;
+	  border: 1px solid red;
+	  text-align: center;
+	  padding: 15px;
+	  font-weight: 600;
+	  margin-bottom: 15px;
+	}
+	#contact .form #sendmessage.show, #contact .form #errormessage.show, #contact .form .show {
+	  display: block;
+	}
+	#contact .form .validation {
+	  color: red;
+	  display: none;
+	  margin: 0 0 20px;
+	  font-weight: 400;
+	  font-size: 13px;
+	}
+	#contact .form input, #contact .form textarea {
+	  border-radius: 0;
+	  box-shadow: none;
+	  font-size: 14px;
+	}
+	#contact .form button[type="submit"] {
+	  background: #868b91;
+	  border: 0;
+	  padding: 10px 24px;
+	  color: #fff;
+	  transition: 0.4s;
+	}
+	#contact .form button[type="submit"]:hover {
+	  background: #51d8ad;
+	}
+</style>
+
+<section>
+
+    <div class="introduction">
+    	<div class="image" id="image">
+
+	        <div class="in-image" style="height: 100%; width: 100%; padding-top: 0px;">
+
+	            <center style="color:white;">
+	            	<h1 style="opacity: 1.0; margin-top: 3rem; ">Welcome to<p class="font-change">Equalizer</p></h1>
+	            	<h2>Breaking The Language Barrier!</h2>
+	        	</center>
+	        </div>
+    	</div>
+    </div>
+
+    <div class="about-app">
+    	<div class="in-about-app">
+    		<center>
+    			<div class="section-header">
+	    		 <h2 class="section-title" style="color: #29413c;font-weight: 700;font-size: 32px;">Few Words About Equalizer</h2><br/>
+	    		 <p class="section-description">This application helps People from different cultural background to communicate and converse with each other without any difficulty of the language</p>
+    		</div>
+	    		 <br/>
+           <div class="icon"><i class="fa fa-shopping-bag"></i></div>
+            <div class="icon-box wow fadeInUp" data-wow-delay="0.2s">
+              <div class="icon"><i class="fa fa-shopping-bag"></i></div>
+              <h4 class="title"><a href="/docs" target="_blank" style="text-decoration: none;">Documentation</a></h4>
+              <p class="description">Read to find out what more this application can offer.</p>
+            </div>
+
+            <div class="icon-box wow fadeInUp" data-wow-delay="0.9s">
+              <div class="icon"><i class="fa fa-photo"></i></div>
+              <h4 class="title"><a href="#contact" style="text-decoration: none;">Contact</a></h4>
+              <p class="description">Scroll down to contact us and know more about us.</p>
+            </div>
+
+            <div class="background wow fadeInRight"></div>
+		</center>
+		</div>
+	</div>
+
+	<section id="services">
+		<div class="container wow fadeIn">
+        <div class="section-header">
+          <h3 class="section-title">Services</h3>
+          <p class="section-description">The main services this application provides are - </p>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="box">
+              <div class="icon"><i class="fa fa-desktop"></i></div>
+              <h4 class="title">Refund Calculation</h4>
+              <p class="description">The application deals with refund of mess amount.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.4s">
+            <div class="box">
+              <div class="icon"><i class="fa fa-bar-chart"></i></div>
+              <h4 class="title">Online Mess Menu</h4>
+              <p class="description">Mess menu for the current time and day is displayed on the student portal.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.6s">
+            <div class="box">
+              <div class="icon"><i class="fa fa-paper-plane"></i></div>
+              <h4 class="title">Mess Statistics</h4>
+              <p class="description">Mess manager is provided with statistics of the respective mess.</p>
+            </div>
+          </div>
+      	</div>
+  		</div>
+	</section>
+
+	<section id="contact">
+
+      <div class="container wow fadeInUp">
+        <div class="section-header">
+          <h3 class="section-title">Contact</h3>
+          <p class="section-description">Any issues? Drop a note!</p>
+        </div>
+      </div>
+
+      <!-- Uncomment below if you wan to use dynamic maps -->
+      <iframe src="https://maps.google.com/maps?q=India%2C%20Karnataka%2C%20NITK&t=&z=13&ie=UTF8&iwloc=&output=embed" width="100%" height="380" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+      <div class="container wow fadeInUp mt-5">
+        <div class="row justify-content-center">
+
+          <div class="col-lg-3 col-md-4">
+
+            <div class="info">
+              <div>
+                <i class="fa fa-map-marker"></i>
+                <p>NITK, Surathkal<br>Karnataka, 575025</p>
+              </div>
+
+              <div>
+                <i class="fa fa-envelope"></i>
+                <p>info@example.com</p>
+              </div>
+
+              <div>
+                <i class="fa fa-phone"></i>
+                <p>+1 5589 55488 55s</p>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <a href="#" class="twitter"><i class="fa fa-twitter"></i></a>
+              <a href="#" class="facebook"><i class="fa fa-facebook"></i></a>
+              <a href="#" class="instagram"><i class="fa fa-instagram"></i></a>
+              <a href="#" class="google-plus"><i class="fa fa-google-plus"></i></a>
+              <a href="#" class="linkedin"><i class="fa fa-linkedin"></i></a>
+            </div>
+
+          </div>
+
+          <div class="col-lg-5 col-md-8">
+            <div class="form">
+              <div id="sendmessage">Your message has been sent. Thank you!</div>
+              <div id="errormessage"></div>
+              <form action="" method="post" role="form" class="contactForm">
+                <div class="form-group">
+                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
+                  <div class="validation"></div>
+                </div>
+                <div class="form-group">
+                  <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                  <div class="validation"></div>
+                </div>
+                <div class="text-center"><button type="submit">Send Message</button></div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section><!-- #contact -->
+
+</section>
+
+ <!-- JavaScript Libraries -->
+  <script src="lib/jquery/jquery.min.js"></script>
+  <script src="lib/jquery/jquery-migrate.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="lib/easing/easing.min.js"></script>
+  <script src="lib/wow/wow.min.js"></script>
+  <script src="lib/waypoints/waypoints.min.js"></script>
+  <script src="lib/counterup/counterup.min.js"></script>
+  <script src="lib/superfish/hoverIntent.js"></script>
+  <script src="lib/superfish/superfish.min.js"></script>
+  <script src="https://bootstrapmade.com/demo/themes/Regna/js/main.js"></script>
+  <script>if( window.self == window.top ) { (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','//www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-55234356-4', 'auto'); ga('send', 'pageview'); } </script>
+
+
+{% endblock %}
   <head>
     <meta charset="utf-8">
     <title></title>
@@ -18,7 +471,7 @@
      <pre id="messages"></pre>
     <div id='translated'> </div>
 	<div id='result'>
-    </div>  
+    </div>
     <script src="bundle.js" charset="utf-8"></script>
       </body>
 </html>

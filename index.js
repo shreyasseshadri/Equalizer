@@ -1,6 +1,6 @@
 var getUserMedia = require('getusermedia')
 
-getUserMedia({video: true, audio: true}, function (err, stream) {
+getUserMedia({video: true, audio: false}, function (err, stream) {
     if (err) return console.error(err)
 
     var Peer = require('simple-peer')
@@ -14,33 +14,33 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     if (location.hash === '#init') is_init = true;
     var server_location = null;
     if (is_init) {
-        server_location = 'ws://localhost:3000/exchange/init';
-    } else server_location = 'ws://localhost:3000/exchange';
-    var server = new WebSocket(server_location);
+        server_location = 'ws://192.168.43.95:3000/exchange/init';
+    } else server_location = 'ws://192.168.43.95:3000/exchange';
 
+    var server = new WebSocket(server_location);
     var spr = new webkitSpeechRecognition();
     spr.continuous = true;
     spr.interimResults = true;
-    
-    fetch('http://localhost:3000/translate', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            text:'धन्यवाद',
-             to:'en',
-        }),
-    }).then(function (response) {
-        return response.json();
-    }).then(json => {
 
-           console.log(json);
-        })
-        .catch(function (error) {
-            throw error;
-        });
+    // fetch('http://localhost:3000/translate', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         text:'Hi how are you',
+    //          to:'hi',
+    //     }),
+    // }).then(function (response) {
+    //     return response.json();
+    // }).then(json => {
+    //        console.log(json);
+    //        console.log(json['result'])
+    //     })
+    //     .catch(function (error) {
+    //         throw error;
+    //     });
 
 
     peer.on('signal', function (data) {
@@ -77,6 +77,30 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
 
     peer.on('data', function (data) {
         document.getElementById('messages').textContent += data + ' ';
+        fetch('http://192.168.43.95:3000/translate', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text:data,
+                 to:'hi',
+            }),
+        }).then(function (response) {
+            return response.json();
+        }).then(json => {
+          console.log(json);
+          res_data = json['result']
+          do_synthesis(res_data)
+          console.log("manas",res_data);
+          document.getElementById('result').textContent += res_data + ' ' ;
+            })
+            .catch(function (error) {
+                throw error;
+            });
+
+
         //if(data!== null)
         //normaltext=data;
         // trans(data);
@@ -97,18 +121,18 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     peer.on('connect', function () {
         console.log("inside connection")
         var r = document.getElementById('result');
-        spr.lang = 'en-IN';
+        spr.lang = 'hi-IN';
         spr.start();
-        //console.log("here")
+        console.log("here")
         var ftr = 'hello';
         spr.onresult = function (event) {
-            //console.log('i got');
+            console.log('i got');
             var interimTranscripts = '';
             for (var i = event.resultIndex; i < event.results.length; i++) {
                 var transcript = event.results[i][0].transcript;
                 //normaltext=transcript;
                 //trans(normaltext)
-                //console.log("my voice" + transcript);
+                console.log("my voice" + transcript);
                 transcript.replace("\n", "<br>");
                 if (event.results[i].isFinal) {
                     ftr += transcript;
@@ -118,15 +142,16 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
 
                 } else {
                     interimTranscripts += transcript;
-
                 }
             }
-            //  r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
+             // r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
             console.log(ftr);
             //trans(ftr);
 
         };
         spr.onerror = function (event) {
+          console.log(spr.error);
+          console.log("Error in srp .....");
         };
     });
     peer.on('close', function () {
@@ -171,15 +196,17 @@ function trans(normaltext) {
 }
 
 function do_synthesis(texter) {
+    console.log("tetx is",texter);
     var msg = new SpeechSynthesisUtterance();
     var voices = window.speechSynthesis.getVoices();
-    msg.voice = voices[10]; // Note: some voices don't support altering params
+    msg.voice = voices[1]; // Note: some voices don't support altering params
     msg.voiceURI = 'native';
     msg.volume = 1; // 0 to 1
     msg.rate = 1; // 0.1 to 10
-    msg.pitch = 2; //0 to 2
-    msg.text = 'Hello World';
-    msg.lang = 'en-US';
+    msg.pitch = 0.8
+    ; //0 to 2
+    msg.text = texter;
+    msg.lang = 'hi-IN';
 
     msg.onend = function (e) {
         console.log('Finished in ' + event.elapsedTime + ' seconds.');
@@ -188,6 +215,19 @@ function do_synthesis(texter) {
     speechSynthesis.speak(msg);
 
 }
+
+// function say(m) {
+//   var msg = new SpeechSynthesisUtterance();
+//   var voices = window.speechSynthesis.getVoices();
+//   msg.voice = voices[10];
+//   msg.voiceURI = "native";
+//   msg.volume = 1;
+//   msg.rate = 1;
+//   msg.pitch = 0.8;
+//   msg.text = m;
+//   msg.lang = 'en-US';
+//   speechSynthesis.speak(msg);
+// }
 
 
 // function Synthesize(stringprint){
