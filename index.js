@@ -116,7 +116,7 @@ getUserMedia({video: true, audio: false}, function (err, stream) {
             },
             body: JSON.stringify({
                 text:data,
-                 to:'hi',
+                 to:'en',
             }),
         }).then(function (response) {
             return response.json();
@@ -185,7 +185,7 @@ getUserMedia({video: true, audio: false}, function (err, stream) {
     peer.on('connect', function () {
         console.log("inside connection")
         var r = document.getElementById('result');
-        spr.lang = 'hi-IN';
+        spr.lang = 'en-IN';
         spr.start();
         console.log("here")
         var ftr = 'hello';
