@@ -16,9 +16,16 @@
   "dependencies": {
     "@google-cloud/translate": "^2.1.2",
     "bootstrap": "^4.1.3",
+    "clmtrackr": "^1.1.2",
+    "emotional": "0.0.3",
+    "execSync": "^1.0.2",
     "getusermedia": "^1.3.5",
     "google-translate-api": "^2.3.0",
+    "google-tts-api": "0.0.4",
+    "node-mpv": "^1.4.3",
+    "play-sound": "^1.1.3",
     "request": "^2.88.0",
+    "sentiment": "^5.0.1",
     "simple-peer": "^5.11.4",
     "watson-developer-cloud": "^3.12.0",
     "ws": "^6.1.0"

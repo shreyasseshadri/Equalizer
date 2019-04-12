@@ -1,0 +1,142 @@
+
+<!-- {% load staticfiles %} -->
+<!DOCTYPE html>
+<html lang="en">
+<title>{% block head_title %}{% endblock %}</title>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/user_registration_bs4.css' %}">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  	<link href="https://bootstrapmade.com/demo/themes/Regna/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Poppins:300,400,500,700" rel="stylesheet">
+    <link href="https://bootstrapmade.com/demo/themes/Regna/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://bootstrapmade.com/demo/themes/Regna/lib/animate/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body id="main" style="background-color: #efebe4; padding-left: 0px; padding-right: 0px; padding-top: 0px; ">
+
+<!-- {% block content %}	 -->
+<style type="text/css">
+	.section-header{
+      font-size: 32px;
+      color: #111;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    h5{
+      font-size: 28px;
+      color: #111;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    h6{
+    	font-size: 20px;
+      color: #111;
+      text-transform: uppercase;
+      text-align: center;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    li{
+      text-align: left;
+      padding-bottom: 20px;
+      padding-left: 50px;
+      padding-right: 50px;
+      color: #29413c;
+    }
+    .list li{
+    text-align: left;
+      color: #29413c;
+    }
+</style>
+<br/><br/>
+<section>
+<h2 class="section-header">User Documentation</h2>
+<hr style="width: 50%;">
+<div>
+	<br>
+	<h5>Introduction</h5><br>
+	<li>
+		This web application enables the user (student) to keep track of the amount spent for mess food and hence, the refund they need to receive by the end of the semester, along with daily menu of the chosen mess. It offers auto-scaling and high availability, supports all platforms as it works on browser. Learn how to use the application with this documentation.
+	</li>
+</div>
+
+<div>
+	<br>
+	<h5>Getting Started</h5>
+
+	<h6>Sign-Up & Log-in</h6><br>
+		<li>
+			A valid email address and password is required for signing up for the application. After entering the required details in the 'Sign-Up' form, which can be accessed through the <strong>top navigation bar</strong>'s 'SignUp' link, a verfifcation link is sent and you are required to press a button to verify and hence, activate your account.
+		</li>
+		<li>
+			You would then be redirected to the login page which can also be accessed through the <strong>top navigation bar</strong>. After filling in the details and clicking on the button, you would be logged in and redirected to edit your profile details.
+		</li>
+		<li>
+			In case of forgotten password, you can set a new one by clicking on the link available on the page saying 'forgot password', and continuing from the login page after you're done.
+		</li>
+	<h6>After Log-in</h6><br>
+		<li>
+			The <strong>profile details</strong> page allows you to edit your details as you see fit. It re-directs you to the home page after updating the details. You can always come back to this page navigating from the sidebar, which can be seen at the top left side of the navigation bar.
+		</li>
+		<li>
+			The <strong>home page</strong> provides you with the basic details of the application along with the respective contacts in case of any issues. We assure you that the response would be immediate.
+		</li>
+		<li>
+			There are four functions that the <strong>side navigation bar</strong> does for you.
+			<ul class="list"><br/>
+			 <li> Navigate to edit your profile details through 'Profile Details' link.</li>
+			 <li> Navigate to your user <strong>dashboard</strong> which is filled with mess and refund details.</li>
+			 <li> Finally, you can deactivate your account if required by navigating through the 'Account Status' link. This means that you are opting out of the mess. </li>
+			</ul>
+		</li>
+		<li>
+			The functions the <strong>top navigation bar</strong> does for you are:
+			<ul class="list"><br>
+			<li>Logging in/out when required - right side.</li>
+			<li>Sign-up for new users - right side.</li>
+			<li> Username which redirects you to <strong>profile details</strong> page - right side.</li>
+			<li> The application logo redirecting you to the <strong>home page</strong> - left side.</li>
+			<li>Three menu bars icon toggling the <strong>side navigation bar</strong> - left side.</li>
+			</ul>
+		</li>
+</div>
+<div>
+	<h5>Handling User Dashboard</h5><br/>
+		<li>
+			This page contains a timeline that indicates when the meals are supposed to be. For example: Breakfast, lunch, and so on, as you will see on the page. 
+		</li>
+		<li>
+			The timeline has 'dots' that when clicked, show you the menu for the respective mealtime, giving you an idea of what's being served in the mess currently.
+		</li>
+		<li>
+			It also has two cards-like structures, which show how much of the refund you have to receive based on your expediture with respect to meals had in mess.
+		</li>
+		<li>
+			The last element is the button 'Scan QR' which does basically what the <strong>side navigation bar</strong>'s 'Scan QR' does.
+		</li>
+</div>
+<div><br>
+	<h5>Scanning The QR Code</h5><br>
+	<li>
+		You can access this page from either the button in user <strong>dashboard</strong>. After pressing the link/button, the application would need permission to access your camera to scan the QR code of whichever mess you want. Currently, there are a total of ten messes in the database, eight boys' and two girls'. Each of them have a unique QR code and you can scan any one of them depending on your preferences. The cost of the meal would be updated on the cards in the <strong>dashboard</strong> showing you the required details.
+	</li>
+</div>
+</section>
+{% endblock %}
+</body>
+<script type="text/javascript">
+	window.onload = alert(localStorage.getItem("yourLang"));
+</script>
+</html>

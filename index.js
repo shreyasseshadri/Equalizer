@@ -1,6 +1,35 @@
 var getUserMedia = require('getusermedia')
+// var googleTTS = require("google-tts-api");
+// var mpv = require('node-mpv');
+// let mpvPlayer = new mpv();
+// googleTTS(texter, "hi",1).then(url => mpvPlayer.load(url));
+// var emotional = require("emotional");
+// emotional.load(function () {
+//     // emotional.get("sentence") // { polarity: [-1,1], subjectivity: [0,1], assessments: ... };
+//     console.log(emotional.positive("You are smart...."));
+//   });
+var Sentiment = require('sentiment');
+var sentiment = new Sentiment();
 
-getUserMedia({video: true, audio: true}, function (err, stream) {
+
+const video = document.getElementById("webcam");
+        const ctrack = new clm.tracker();
+        ctrack.init();
+        const overlay = document.getElementById('overlay');
+        const overlayCC = overlay.getContext('2d');
+function trackingLoop() {
+    // Check if a face is detected, and if so, track it.
+    requestAnimationFrame(trackingLoop);
+    
+    let currentPosition = ctrack.getCurrentPosition();
+    overlayCC.clearRect(0, 0, 400, 300);
+    
+    if (currentPosition) {
+        ctrack.draw(overlay);
+    }
+    }
+
+getUserMedia({video: true, audio: false}, function (err, stream) {
     if (err) return console.error(err)
 
     var Peer = require('simple-peer')
@@ -14,42 +43,42 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     if (location.hash === '#init') is_init = true;
     var server_location = null;
     if (is_init) {
-        server_location = 'ws://localhost:3000/exchange/init';
-    } else server_location = 'ws://localhost:3000/exchange';
-    var server = new WebSocket(server_location);
+        server_location = 'ws://192.168.43.95:3000/exchange/init';
+    } else server_location = 'ws://192.168.43.95:3000/exchange';
 
+    var server = new WebSocket(server_location);
     var spr = new webkitSpeechRecognition();
     spr.continuous = true;
     spr.interimResults = true;
-    
-    fetch('http://localhost:3000/translate', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            text:'धन्यवाद',
-             to:'en',
-        }),
-    }).then(function (response) {
-        return response.json();
-    }).then(json => {
 
-           console.log(json);
-        })
-        .catch(function (error) {
-            throw error;
-        });
+    // fetch('http://localhost:3000/translate', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //         text:'Hi how are you',
+    //          to:'hi',
+    //     }),
+    // }).then(function (response) {
+    //     return response.json();
+    // }).then(json => {
+    //        console.log(json);
+    //        console.log(json['result'])
+    //     })
+    //     .catch(function (error) {
+    //         throw error;
+    //     });
 
 
     peer.on('signal', function (data) {
         server.send(JSON.stringify(data));
-        document.getElementById('yourId').value = JSON.stringify(data)
+        // document.getElementById('yourId').value = JSON.stringify(data)
     });
 
     server.onmessage = function (e) {
-        document.getElementById('otherId').value = e.data;
+        // document.getElementById('otherId').value = e.data;
         peer.signal(JSON.parse(e.data));
     };
 
@@ -64,19 +93,75 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     //         perr.signal(JSON.parse(e.data));
     //     };
     // }
-    document.getElementById('connect').addEventListener('click', function () {
-        var otherId = JSON.parse(document.getElementById('otherId').value);
-        peer.signal(otherId);
-    });
+    // document.getElementById('connect').addEventListener('click', function () {
+    //     var otherId = JSON.parse(document.getElementById('otherId').value);
+    //     peer.signal(otherId);
+    // });
 
-    document.getElementById('send').addEventListener('click', function () {
-        var yourMessage = document.getElementById('yourMessage').value
-        peer.send(yourMessage)
-        console.log('Message sent !');
-    });
+    // document.getElementById('send').addEventListener('click', function () {
+    //     var yourMessage = document.getElementById('yourMessage').value
+    //     peer.send(yourMessage)
+    //     console.log('Message sent !');
+    // });
+
+
 
     peer.on('data', function (data) {
         document.getElementById('messages').textContent += data + ' ';
+        fetch('http://192.168.43.95:3000/translate', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text:data,
+                 to:'hi',
+            }),
+        }).then(function (response) {
+            return response.json();
+        }).then(json => {
+          console.log(json);
+          res_data = json['result']
+        //   do_synthesis(res_data)
+          console.log("manas",res_data);
+          document.getElementById('result').textContent += res_data + ' ' ;
+            })
+            .catch(function (error) {
+                throw error;
+            });
+            fetch('http://192.168.43.95:3000/translate', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                text:data,
+                 to:'en',
+            }),
+        }).then(function (response) {
+            return response.json();
+        }).then(json => {
+          console.log(json);
+          res_data = json['result']
+        //   do_synthesis(res_data)
+            var result = sentiment.analyze(res_data);
+            val = result.score
+            if(val < 0){
+                document.getElementById('result').textContent += '😟' + ' ';
+            }
+            else if(val == 0){
+                document.getElementById('result').textContent += '☺️' + ' ';                
+            }
+            else{
+                document.getElementById('result').textContent += '😊' + ' ';
+            }
+        //   console.log("manas",res_data);
+            })
+            .catch(function (error) {
+                throw error;
+            });
         //if(data!== null)
         //normaltext=data;
         // trans(data);
@@ -84,31 +169,34 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
     });
 
     peer.on('stream', function (stream) {
-        var video = document.createElement('video')
+        // var video = document.createElement('video')
+        // video.setAttribute("id","webcam")
         // var binaryData = [];
         // binaryData.push(stream);
         // video.src =window.URL.createObjectURL(new Blob(binaryData, {type: "application/zip"}))
         video.srcObject = stream;
-        document.body.appendChild(video)
+        // document.body.appendChild(video)
         video.play()
+        ctrack.start(video);
+        trackingLoop()
         // ------------------------------------------------------
 
     });
     peer.on('connect', function () {
         console.log("inside connection")
         var r = document.getElementById('result');
-        spr.lang = 'en-IN';
+        spr.lang = 'hi-IN';
         spr.start();
-        //console.log("here")
+        console.log("here")
         var ftr = 'hello';
         spr.onresult = function (event) {
-            //console.log('i got');
+            console.log('i got');
             var interimTranscripts = '';
             for (var i = event.resultIndex; i < event.results.length; i++) {
                 var transcript = event.results[i][0].transcript;
                 //normaltext=transcript;
                 //trans(normaltext)
-                //console.log("my voice" + transcript);
+                console.log("my voice" + transcript);
                 transcript.replace("\n", "<br>");
                 if (event.results[i].isFinal) {
                     ftr += transcript;
@@ -118,15 +206,16 @@ getUserMedia({video: true, audio: true}, function (err, stream) {
 
                 } else {
                     interimTranscripts += transcript;
-
                 }
             }
-            //  r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
+             // r.innerHTML='my speech :'+ftr + '<span style="color:#999">'+'</span>';
             console.log(ftr);
             //trans(ftr);
 
         };
         spr.onerror = function (event) {
+          console.log(spr.error);
+          console.log("Error in srp .....");
         };
     });
     peer.on('close', function () {
@@ -149,7 +238,7 @@ function trans(normaltext) {
 
     var parameters = {
         text: normaltext,
-        model_id: 'hi-en'
+        model_id: 'hi-IN'
     };
 
     languageTranslator.translate(
@@ -171,22 +260,41 @@ function trans(normaltext) {
 }
 
 function do_synthesis(texter) {
+    console.log("inside synthesis .... ")
     var msg = new SpeechSynthesisUtterance();
     var voices = window.speechSynthesis.getVoices();
-    msg.voice = voices[10]; // Note: some voices don't support altering params
+    msg.voice = voices[2]; // Note: some voices don't support altering params
     msg.voiceURI = 'native';
     msg.volume = 1; // 0 to 1
     msg.rate = 1; // 0.1 to 10
-    msg.pitch = 2; //0 to 2
-    msg.text = 'Hello World';
-    msg.lang = 'en-US';
+    msg.pitch = 0.8 ; //0 to 2
+    msg.text = texter;
+    msg.lang = 'en-IN';
 
     msg.onend = function (e) {
         console.log('Finished in ' + event.elapsedTime + ' seconds.');
     };
 
     speechSynthesis.speak(msg);
+    // const googleTTS = require("google-tts-api");
+    // let mpv = require('node-mpv');
+    // let mpvPlayer = new mpv();
+    // googleTTS(texter, "hi",1).then(url => mpvPlayer.load(url));
 
+
+}
+
+function say(m) {
+  var msg = new SpeechSynthesisUtterance();
+  var voices = window.speechSynthesis.getVoices();
+  msg.voice = voices[10];
+  msg.voiceURI = "native";
+  msg.volume = 1;
+  msg.rate = 1;
+  msg.pitch = 0.8;
+  msg.text = m;
+  msg.lang = 'hi-IN';
+  speechSynthesis.speak(msg);
 }
 
 
