@@ -20,8 +20,8 @@
     "google-translate-api": "^2.3.0",
     "request": "^2.88.0",
     "simple-peer": "^9.6.0",
-    "watson-developer-cloud": "^3.12.0",
-    "ws": "^7.1.2"
+    "watson-developer-cloud": "^4.0.1",
+    "ws": "^6.1.0"
   },
   "repository": {
     "type": "",
