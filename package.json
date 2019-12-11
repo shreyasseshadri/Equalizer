@@ -11,7 +11,7 @@
   "license": "NITK",
   "devDependencies": {
     "budo": "^11.6.3",
-    "nodemon": "^1.19.4"
+    "nodemon": "^2.0.2"
   },
   "dependencies": {
     "@google-cloud/translate": "^4.2.1",
