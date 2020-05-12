@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@google-cloud/translate": "^5.1.2",
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.0",
     "getusermedia": "^2.0.1",
     "google-translate-api": "^2.3.0",
     "request": "^2.88.0",
