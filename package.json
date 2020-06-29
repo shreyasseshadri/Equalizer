@@ -14,7 +14,7 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "@google-cloud/translate": "^5.1.2",
+    "@google-cloud/translate": "^6.0.1",
     "bootstrap": "^4.4.1",
     "getusermedia": "^2.0.1",
     "google-translate-api": "^2.3.0",
