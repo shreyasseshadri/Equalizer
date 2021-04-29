@@ -1,0 +1,31 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "23:30"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: simple-peer
+    versions:
+    - 9.10.0
+    - 9.9.3
+    - 9.9.4
+  - dependency-name: ws
+    versions:
+    - 7.4.2
+    - 7.4.3
+    - 7.4.4
+  - dependency-name: "@google-cloud/translate"
+    versions:
+    - 6.1.0
+  - dependency-name: lodash
+    versions:
+    - 4.17.20
+  - dependency-name: elliptic
+    versions:
+    - 6.5.3
+  - dependency-name: handlebars
+    versions:
+    - 4.7.6
